@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, FlatList, SafeAreaView, Platform, TouchableOpacity } from 'react-native';
 import { Star, Filter, TrendingUp, TrendingDown } from 'lucide-react-native';
-import { Colors, Fonts } from '@/constants/Colors';
+import Colors, { Fonts } from '@/constants/Colors';
 import { getCurrentUser, getBusinessEstablishment, getEstablishmentRatings } from '@/utils/mockData';
 
 export default function ReviewsScreen() {

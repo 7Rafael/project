@@ -12,7 +12,7 @@ import {
 import { useRouter } from 'expo-router';
 import { Eye, EyeOff, User, Store } from 'lucide-react-native';
 import Button from '@/components/Button';
-import { Colors, Fonts } from '@/constants/Colors';
+import Colors, { Fonts } from '@/constants/Colors';
 import { authenticateUser } from '@/utils/mockData';
 
 export default function LoginScreen() {

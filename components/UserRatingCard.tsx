@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
 import RatingStars from './RatingStars';
-import { Colors, Fonts } from '../constants/Colors';
+import Colors, { Fonts } from '../constants/Colors';
 import { getEstablishmentById } from '../utils/mockData';
 import { Rating } from '../types';
 

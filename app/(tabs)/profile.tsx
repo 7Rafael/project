@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView, SafeAreaVi
 import { useRouter } from 'expo-router';
 import { LogOut, Star, Settings, Bell, Shield, CircleHelp as HelpCircle, Store } from 'lucide-react-native';
 import Button from '@/components/Button';
-import { Colors, Fonts } from '@/constants/Colors';
+import Colors, { Fonts } from '@/constants/Colors';
 import { getCurrentUser, getUserRatings, getBusinessEstablishment } from '@/utils/mockData';
 
 export default function ProfileScreen() {

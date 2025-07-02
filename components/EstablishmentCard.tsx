@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
 import { MapPin } from 'lucide-react-native';
 import RatingStars from './RatingStars';
-import { Colors, Fonts } from '../constants/Colors';
+import Colors, { Fonts } from '../constants/Colors';
 import { Establishment } from '../types';
 
 interface EstablishmentCardProps {

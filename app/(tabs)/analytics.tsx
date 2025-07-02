@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, SafeAreaView, Platform } from 'react-native';
 import { TrendingUp, Users, Star, MessageSquare, Calendar } from 'lucide-react-native';
-import { Colors, Fonts } from '@/constants/Colors';
+import Colors, { Fonts } from '@/constants/Colors';
 import { getCurrentUser, getBusinessEstablishment, getEstablishmentRatings } from '@/utils/mockData';
 
 export default function AnalyticsScreen() {

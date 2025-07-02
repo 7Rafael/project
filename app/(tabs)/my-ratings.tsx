@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, FlatList, SafeAreaView, Platform } from 'react-native';
 import { Star } from 'lucide-react-native';
 import UserRatingCard from '@/components/UserRatingCard';
-import { Colors, Fonts } from '@/constants/Colors';
+import Colors, { Fonts } from '@/constants/Colors';
 import { getCurrentUser, getUserRatings } from '@/utils/mockData';
 
 export default function MyRatingsScreen() {

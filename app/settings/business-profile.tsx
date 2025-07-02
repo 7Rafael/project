@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import { Camera, MapPin, Phone, Mail, FileText } from 'lucide-react-native';
 import Button from '@/components/Button';
-import { Colors, Fonts } from '@/constants/Colors';
+import Colors, { Fonts } from '@/constants/Colors';
 import { getCurrentUser, getBusinessEstablishment } from '@/utils/mockData';
 
 export default function BusinessProfileScreen() {

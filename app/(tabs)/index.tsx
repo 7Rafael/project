@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import { Search, Filter, TrendingUp, Users, Star, MessageSquare } from 'lucide-react-native';
 import EstablishmentCard from '@/components/EstablishmentCard';
-import { Colors, Fonts } from '@/constants/Colors';
+import Colors, { Fonts } from '@/constants/Colors';
 import { establishments, getCurrentUser, getBusinessEstablishment, getEstablishmentRatings } from '@/utils/mockData';
 
 export default function HomeScreen() {
