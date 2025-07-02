@@ -82,6 +82,34 @@ export default function TabLayout() {
           headerTitle: 'Meu Perfil',
         }}
       />
+      
+      {/* Hide analytics and reviews tabs for customer users */}
+      {!isBusinessUser && (
+        <>
+          <Tabs.Screen
+            name="analytics"
+            options={{
+              href: null, // This hides the tab
+            }}
+          />
+          <Tabs.Screen
+            name="reviews"
+            options={{
+              href: null, // This hides the tab
+            }}
+          />
+        </>
+      )}
+      
+      {/* Hide my-ratings tab for business users */}
+      {isBusinessUser && (
+        <Tabs.Screen
+          name="my-ratings"
+          options={{
+            href: null, // This hides the tab
+          }}
+        />
+      )}
     </Tabs>
   );
 }
