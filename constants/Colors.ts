@@ -30,28 +30,45 @@ export const DarkColors = {
   warning: '#ff9500',
 };
 
-// Dynamic colors that change based on theme
-export let Colors = LightColors;
-
-export const updateColors = (isDark: boolean) => {
-  Colors = isDark ? DarkColors : LightColors;
+// Create a complete color object with nested structure
+export const getColors = (isDark: boolean) => {
+  const baseColors = isDark ? DarkColors : LightColors;
+  return {
+    ...baseColors,
+    text: {
+      primary: baseColors.textPrimary,
+      secondary: baseColors.textSecondary,
+      light: baseColors.textSecondary,
+      white: '#ffffff'
+    },
+    background: {
+      primary: baseColors.background,
+      secondary: baseColors.backgroundProfile,
+      accent: baseColors.backgroundProfile
+    },
+  };
 };
 
-// Legacy compatibility - keeping these for components that might still reference them
-export const getColors = (isDark: boolean) => ({
-  ...isDark ? DarkColors : LightColors,
+// Default export with nested structure for backward compatibility
+const Colors = {
+  ...LightColors,
   text: {
-    primary: isDark ? '#ffffff' : '#000000',
-    secondary: isDark ? '#a0a0a0' : '#6a6666',
-    light: isDark ? '#a0a0a0' : '#6a6666',
+    primary: LightColors.textPrimary,
+    secondary: LightColors.textSecondary,
+    light: LightColors.textSecondary,
     white: '#ffffff'
   },
   background: {
-    primary: isDark ? '#1a1a1a' : '#ffffff',
-    secondary: isDark ? '#2a2a2a' : '#F0F2F2',
-    accent: isDark ? '#2a2a2a' : '#F0F2F2'
+    primary: LightColors.background,
+    secondary: LightColors.backgroundProfile,
+    accent: LightColors.backgroundProfile
   },
-});
+};
+
+export const updateColors = (isDark: boolean) => {
+  // This function is kept for compatibility but the main export remains static
+  // Components should use getColors() or useTheme() for dynamic colors
+};
 
 export const Fonts = {
   regular: 'Inter-Regular',

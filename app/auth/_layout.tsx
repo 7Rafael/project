@@ -1,19 +1,23 @@
 import React from 'react';
 import { Stack } from 'expo-router';
-import Colors from '@/constants/Colors';
+import { useTheme } from '@/contexts/ThemeContext';
+import { getColors } from '@/constants/Colors';
 
 export default function AuthLayout() {
+  const { isDark } = useTheme();
+  const colors = getColors(isDark);
+
   return (
     <Stack
       screenOptions={{
         headerStyle: {
-          backgroundColor: Colors.background.primary,
+          backgroundColor: colors.background.primary,
         },
         headerTitleStyle: {
           fontWeight: '600',
-          color: Colors.text.primary,
+          color: colors.text.primary,
         },
-        headerTintColor: Colors.primary,
+        headerTintColor: colors.primary,
         headerShadowVisible: false,
       }}
     >

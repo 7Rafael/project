@@ -1,5 +1,4 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type Theme = 'light' | 'dark' | 'system';
 
@@ -33,9 +32,12 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   const loadTheme = async () => {
     try {
-      const savedTheme = await AsyncStorage.getItem('theme');
-      if (savedTheme && ['light', 'dark', 'system'].includes(savedTheme)) {
-        setThemeState(savedTheme as Theme);
+      // For web compatibility, we'll use localStorage instead of AsyncStorage
+      if (typeof window !== 'undefined') {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme && ['light', 'dark', 'system'].includes(savedTheme)) {
+          setThemeState(savedTheme as Theme);
+        }
       }
     } catch (error) {
       console.error('Error loading theme:', error);
@@ -44,9 +46,12 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   const updateIsDark = () => {
     if (theme === 'system') {
-      // For web, we'll default to light mode when system is selected
-      // In a real app, you'd check the system preference
-      setIsDark(false);
+      // For web, check system preference
+      if (typeof window !== 'undefined') {
+        setIsDark(window.matchMedia('(prefers-color-scheme: dark)').matches);
+      } else {
+        setIsDark(false);
+      }
     } else {
       setIsDark(theme === 'dark');
     }
@@ -54,7 +59,9 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   const setTheme = async (newTheme: Theme) => {
     try {
-      await AsyncStorage.setItem('theme', newTheme);
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('theme', newTheme);
+      }
       setThemeState(newTheme);
     } catch (error) {
       console.error('Error saving theme:', error);
