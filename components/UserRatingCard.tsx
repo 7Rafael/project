@@ -2,7 +2,8 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
 import RatingStars from './RatingStars';
-import Colors, { Fonts } from '../constants/Colors';
+import { useTheme } from '@/contexts/ThemeContext';
+import { getColors, Fonts } from '@/constants/Colors';
 import { getEstablishmentById } from '../utils/mockData';
 import { Rating } from '../types';
 
@@ -11,6 +12,8 @@ interface UserRatingCardProps {
 }
 
 const UserRatingCard = ({ rating }: UserRatingCardProps) => {
+  const { isDark } = useTheme();
+  const colors = getColors(isDark);
   const router = useRouter();
   const establishment = getEstablishmentById(rating.establishmentId);
 
@@ -21,6 +24,45 @@ const UserRatingCard = ({ rating }: UserRatingCardProps) => {
   const handlePress = () => {
     router.push(`/establishment/${establishment.id}`);
   };
+
+  const styles = StyleSheet.create({
+    card: {
+      backgroundColor: colors.background,
+      borderRadius: 16,
+      padding: 16,
+      marginBottom: 16,
+      shadowColor: colors.shadow,
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.1,
+      shadowRadius: 8,
+      elevation: 3,
+    },
+    headerContainer: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginBottom: 8,
+    },
+    establishmentName: {
+      fontSize: 16,
+      fontFamily: Fonts.semiBold,
+      color: colors.textPrimary,
+    },
+    date: {
+      fontSize: 12,
+      color: colors.textSecondary,
+      fontFamily: Fonts.regular,
+    },
+    ratingContainer: {
+      marginBottom: 12,
+    },
+    comment: {
+      fontSize: 14,
+      color: colors.textSecondary,
+      lineHeight: 20,
+      fontFamily: Fonts.regular,
+    },
+  });
 
   return (
     <TouchableOpacity 
@@ -39,44 +81,5 @@ const UserRatingCard = ({ rating }: UserRatingCardProps) => {
     </TouchableOpacity>
   );
 };
-
-const styles = StyleSheet.create({
-  card: {
-    backgroundColor: Colors.background,
-    borderRadius: 16,
-    padding: 16,
-    marginBottom: 16,
-    shadowColor: Colors.shadow,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 3,
-  },
-  headerContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 8,
-  },
-  establishmentName: {
-    fontSize: 16,
-    fontFamily: Fonts.semiBold,
-    color: Colors.textPrimary,
-  },
-  date: {
-    fontSize: 12,
-    color: Colors.textSecondary,
-    fontFamily: Fonts.regular,
-  },
-  ratingContainer: {
-    marginBottom: 12,
-  },
-  comment: {
-    fontSize: 14,
-    color: Colors.textSecondary,
-    lineHeight: 20,
-    fontFamily: Fonts.regular,
-  },
-});
 
 export default UserRatingCard;

@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Switch, ScrollView, SafeAreaView, Platform } from 'react-native';
-import Colors from '@/constants/Colors';
+import { useTheme } from '@/contexts/ThemeContext';
+import { getColors, Fonts } from '@/constants/Colors';
 
 export default function NotificationsScreen() {
+  const { isDark } = useTheme();
+  const colors = getColors(isDark);
   const [notifications, setNotifications] = useState({
     pushNotifications: true,
     emailNotifications: true,
@@ -58,12 +61,93 @@ export default function NotificationsScreen() {
     },
   ];
 
+  const styles = StyleSheet.create({
+    safeArea: {
+      flex: 1,
+      backgroundColor: colors.background.secondary,
+      paddingTop: Platform.OS === 'android' ? 25 : 0,
+    },
+    container: {
+      flex: 1,
+    },
+    content: {
+      padding: 24,
+    },
+    description: {
+      fontSize: 16,
+      color: colors.text.secondary,
+      lineHeight: 24,
+      marginBottom: 24,
+      fontFamily: Fonts.regular,
+    },
+    notificationsContainer: {
+      backgroundColor: colors.background.primary,
+      borderRadius: 16,
+      overflow: 'hidden',
+      marginBottom: 24,
+      shadowColor: colors.shadow,
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.1,
+      shadowRadius: 8,
+      elevation: 3,
+    },
+    notificationItem: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      paddingVertical: 16,
+      paddingHorizontal: 16,
+      borderBottomWidth: 1,
+      borderBottomColor: colors.border,
+    },
+    lastNotificationItem: {
+      borderBottomWidth: 0,
+    },
+    notificationTextContainer: {
+      flex: 1,
+      marginRight: 16,
+    },
+    notificationTitle: {
+      fontSize: 16,
+      fontFamily: Fonts.medium,
+      color: colors.text.primary,
+      marginBottom: 2,
+    },
+    notificationSubtitle: {
+      fontSize: 12,
+      color: colors.text.secondary,
+      lineHeight: 16,
+      fontFamily: Fonts.regular,
+    },
+    infoContainer: {
+      backgroundColor: colors.background.primary,
+      borderRadius: 16,
+      padding: 20,
+      shadowColor: colors.shadow,
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.1,
+      shadowRadius: 8,
+      elevation: 3,
+    },
+    infoTitle: {
+      fontSize: 16,
+      fontFamily: Fonts.semiBold,
+      color: colors.text.primary,
+      marginBottom: 8,
+    },
+    infoText: {
+      fontSize: 14,
+      color: colors.text.secondary,
+      lineHeight: 20,
+      fontFamily: Fonts.regular,
+    },
+  });
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <View style={styles.content}>
           <Text style={styles.description}>
-            Configure como e quando você deseja receber notificações do RateSpot.
+            Configure como e quando você deseja receber notificações do MeetPoint.
           </Text>
 
           <View style={styles.notificationsContainer}>
@@ -83,10 +167,10 @@ export default function NotificationsScreen() {
                   value={item.value}
                   onValueChange={() => handleToggle(item.key)}
                   trackColor={{ 
-                    false: Colors.text.light, 
-                    true: Colors.primaryLight 
+                    false: colors.textSecondary, 
+                    true: colors.primaryLight 
                   }}
-                  thumbColor={item.value ? Colors.primary : Colors.background.primary}
+                  thumbColor={item.value ? colors.primary : colors.background.primary}
                 />
               </View>
             ))}
@@ -104,81 +188,3 @@ export default function NotificationsScreen() {
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: Colors.background.secondary,
-    paddingTop: Platform.OS === 'android' ? 25 : 0,
-  },
-  container: {
-    flex: 1,
-  },
-  content: {
-    padding: 24,
-  },
-  description: {
-    fontSize: 16,
-    color: Colors.text.secondary,
-    lineHeight: 24,
-    marginBottom: 24,
-  },
-  notificationsContainer: {
-    backgroundColor: Colors.background.primary,
-    borderRadius: 16,
-    overflow: 'hidden',
-    marginBottom: 24,
-    shadowColor: Colors.shadow,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 3,
-  },
-  notificationItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 16,
-    paddingHorizontal: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.border,
-  },
-  lastNotificationItem: {
-    borderBottomWidth: 0,
-  },
-  notificationTextContainer: {
-    flex: 1,
-    marginRight: 16,
-  },
-  notificationTitle: {
-    fontSize: 16,
-    fontWeight: '500',
-    color: Colors.text.primary,
-    marginBottom: 2,
-  },
-  notificationSubtitle: {
-    fontSize: 12,
-    color: Colors.text.light,
-    lineHeight: 16,
-  },
-  infoContainer: {
-    backgroundColor: Colors.background.primary,
-    borderRadius: 16,
-    padding: 20,
-    shadowColor: Colors.shadow,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 3,
-  },
-  infoTitle: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: Colors.text.primary,
-    marginBottom: 8,
-  },
-  infoText: {
-    fontSize: 14,
-    color: Colors.text.secondary,
-    lineHeight: 20,
-  },
-});

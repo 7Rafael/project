@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Switch, TouchableOpacity, ScrollView, SafeAreaView, Platform } from 'react-native';
 import { ChevronRight } from 'lucide-react-native';
-import Colors from '@/constants/Colors';
+import { useTheme } from '@/contexts/ThemeContext';
+import { getColors, Fonts } from '@/constants/Colors';
 
 export default function PrivacyScreen() {
+  const { isDark } = useTheme();
+  const colors = getColors(isDark);
   const [privacy, setPrivacy] = useState({
     profileVisible: true,
     showRatings: true,
@@ -67,12 +70,114 @@ export default function PrivacyScreen() {
     },
   ];
 
+  const styles = StyleSheet.create({
+    safeArea: {
+      flex: 1,
+      backgroundColor: colors.background.secondary,
+      paddingTop: Platform.OS === 'android' ? 25 : 0,
+    },
+    container: {
+      flex: 1,
+    },
+    content: {
+      padding: 24,
+    },
+    description: {
+      fontSize: 16,
+      color: colors.text.secondary,
+      lineHeight: 24,
+      marginBottom: 24,
+      fontFamily: Fonts.regular,
+    },
+    section: {
+      marginBottom: 32,
+    },
+    sectionTitle: {
+      fontSize: 18,
+      fontFamily: Fonts.semiBold,
+      color: colors.text.primary,
+      marginBottom: 12,
+    },
+    privacyContainer: {
+      backgroundColor: colors.background.primary,
+      borderRadius: 16,
+      overflow: 'hidden',
+      shadowColor: colors.shadow,
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.1,
+      shadowRadius: 8,
+      elevation: 3,
+    },
+    privacyItem: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      paddingVertical: 16,
+      paddingHorizontal: 16,
+      borderBottomWidth: 1,
+      borderBottomColor: colors.border,
+    },
+    lastPrivacyItem: {
+      borderBottomWidth: 0,
+    },
+    privacyTextContainer: {
+      flex: 1,
+      marginRight: 16,
+    },
+    privacyTitle: {
+      fontSize: 16,
+      fontFamily: Fonts.medium,
+      color: colors.text.primary,
+      marginBottom: 2,
+    },
+    privacySubtitle: {
+      fontSize: 12,
+      color: colors.text.secondary,
+      lineHeight: 16,
+      fontFamily: Fonts.regular,
+    },
+    linksContainer: {
+      backgroundColor: colors.background.primary,
+      borderRadius: 16,
+      overflow: 'hidden',
+      shadowColor: colors.shadow,
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.1,
+      shadowRadius: 8,
+      elevation: 3,
+    },
+    linkItem: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      paddingVertical: 16,
+      paddingHorizontal: 16,
+      borderBottomWidth: 1,
+      borderBottomColor: colors.border,
+    },
+    lastLinkItem: {
+      borderBottomWidth: 0,
+    },
+    linkTextContainer: {
+      flex: 1,
+    },
+    linkTitle: {
+      fontSize: 16,
+      fontFamily: Fonts.medium,
+      color: colors.text.primary,
+      marginBottom: 2,
+    },
+    linkSubtitle: {
+      fontSize: 12,
+      color: colors.text.secondary,
+      fontFamily: Fonts.regular,
+    },
+  });
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <View style={styles.content}>
           <Text style={styles.description}>
-            Controle como suas informações são compartilhadas e usadas no RateSpot.
+            Controle como suas informações são compartilhadas e usadas no MeetPoint.
           </Text>
 
           <View style={styles.section}>
@@ -94,10 +199,10 @@ export default function PrivacyScreen() {
                     value={item.value}
                     onValueChange={() => handleToggle(item.key)}
                     trackColor={{ 
-                      false: Colors.text.light, 
-                      true: Colors.primaryLight 
+                      false: colors.textSecondary, 
+                      true: colors.primaryLight 
                     }}
-                    thumbColor={item.value ? Colors.primary : Colors.background.primary}
+                    thumbColor={item.value ? colors.primary : colors.background.primary}
                   />
                 </View>
               ))}
@@ -121,7 +226,7 @@ export default function PrivacyScreen() {
                     <Text style={styles.linkTitle}>{link.title}</Text>
                     <Text style={styles.linkSubtitle}>{link.subtitle}</Text>
                   </View>
-                  <ChevronRight size={20} color={Colors.text.light} />
+                  <ChevronRight size={20} color={colors.textSecondary} />
                 </TouchableOpacity>
               ))}
             </View>
@@ -131,102 +236,3 @@ export default function PrivacyScreen() {
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: Colors.background.secondary,
-    paddingTop: Platform.OS === 'android' ? 25 : 0,
-  },
-  container: {
-    flex: 1,
-  },
-  content: {
-    padding: 24,
-  },
-  description: {
-    fontSize: 16,
-    color: Colors.text.secondary,
-    lineHeight: 24,
-    marginBottom: 24,
-  },
-  section: {
-    marginBottom: 32,
-  },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: Colors.text.primary,
-    marginBottom: 12,
-  },
-  privacyContainer: {
-    backgroundColor: Colors.background.primary,
-    borderRadius: 16,
-    overflow: 'hidden',
-    shadowColor: Colors.shadow,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 3,
-  },
-  privacyItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 16,
-    paddingHorizontal: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.border,
-  },
-  lastPrivacyItem: {
-    borderBottomWidth: 0,
-  },
-  privacyTextContainer: {
-    flex: 1,
-    marginRight: 16,
-  },
-  privacyTitle: {
-    fontSize: 16,
-    fontWeight: '500',
-    color: Colors.text.primary,
-    marginBottom: 2,
-  },
-  privacySubtitle: {
-    fontSize: 12,
-    color: Colors.text.light,
-    lineHeight: 16,
-  },
-  linksContainer: {
-    backgroundColor: Colors.background.primary,
-    borderRadius: 16,
-    overflow: 'hidden',
-    shadowColor: Colors.shadow,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 3,
-  },
-  linkItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 16,
-    paddingHorizontal: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.border,
-  },
-  lastLinkItem: {
-    borderBottomWidth: 0,
-  },
-  linkTextContainer: {
-    flex: 1,
-  },
-  linkTitle: {
-    fontSize: 16,
-    fontWeight: '500',
-    color: Colors.text.primary,
-    marginBottom: 2,
-  },
-  linkSubtitle: {
-    fontSize: 12,
-    color: Colors.text.light,
-  },
-});

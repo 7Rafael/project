@@ -1,37 +1,40 @@
 import React from 'react';
 import { Tabs } from 'expo-router';
 import { Chrome as Home, Star, User, ChartBar as BarChart3, MessageSquare } from 'lucide-react-native';
-import Colors, { Fonts } from '@/constants/Colors';
+import { useTheme } from '@/contexts/ThemeContext';
+import { getColors, Fonts } from '@/constants/Colors';
 import { getCurrentUser } from '@/utils/mockData';
 
 export default function TabLayout() {
+  const { isDark } = useTheme();
+  const colors = getColors(isDark);
   const currentUser = getCurrentUser();
   const isBusinessUser = currentUser.type === 'business';
 
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors.primary,
-        tabBarInactiveTintColor: Colors.textSecondary,
+        tabBarActiveTintColor: colors.primary,
+        tabBarInactiveTintColor: colors.textSecondary,
         tabBarLabelStyle: {
           fontSize: 12,
           fontFamily: Fonts.medium,
         },
         tabBarStyle: {
           borderTopWidth: 1,
-          borderTopColor: Colors.border,
+          borderTopColor: colors.border,
           paddingTop: 5,
           paddingBottom: 5,
           height: 60,
-          backgroundColor: Colors.background,
+          backgroundColor: colors.background,
         },
         headerShadowVisible: false,
         headerStyle: {
-          backgroundColor: Colors.background,
+          backgroundColor: colors.background,
         },
         headerTitleStyle: {
           fontFamily: Fonts.semiBold,
-          color: Colors.textPrimary,
+          color: colors.textPrimary,
         },
       }}
     >

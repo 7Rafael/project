@@ -1,7 +1,8 @@
 import React from 'react';
 import { View, TouchableOpacity, StyleSheet, ViewStyle } from 'react-native';
 import { Star } from 'lucide-react-native';
-import Colors from '../constants/Colors';
+import { useTheme } from '@/contexts/ThemeContext';
+import { getColors } from '@/constants/Colors';
 
 interface RatingStarsProps {
   rating: number;
@@ -20,11 +21,24 @@ const RatingStars = ({
   onRatingChange,
   style,
 }: RatingStarsProps) => {
+  const { isDark } = useTheme();
+  const colors = getColors(isDark);
+
   const handlePress = (selectedRating: number) => {
     if (interactive && onRatingChange) {
       onRatingChange(selectedRating);
     }
   };
+
+  const styles = StyleSheet.create({
+    container: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    starContainer: {
+      padding: 2,
+    },
+  });
 
   return (
     <View style={[styles.container, style]}>
@@ -42,8 +56,8 @@ const RatingStars = ({
           >
             <Star
               size={size}
-              color={filled ? Colors.primary : Colors.textSecondary}
-              fill={filled ? Colors.primary : 'transparent'}
+              color={filled ? colors.primary : colors.textSecondary}
+              fill={filled ? colors.primary : 'transparent'}
               strokeWidth={1.5}
             />
           </TouchableOpacity>
@@ -52,15 +66,5 @@ const RatingStars = ({
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  starContainer: {
-    padding: 2,
-  },
-});
 
 export default RatingStars;

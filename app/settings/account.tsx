@@ -12,10 +12,13 @@ import {
 } from 'react-native';
 import { Camera, CreditCard as Edit3 } from 'lucide-react-native';
 import Button from '@/components/Button';
-import Colors from '@/constants/Colors';
+import { useTheme } from '@/contexts/ThemeContext';
+import { getColors, Fonts } from '@/constants/Colors';
 import { getCurrentUser } from '@/utils/mockData';
 
 export default function AccountScreen() {
+  const { isDark } = useTheme();
+  const colors = getColors(isDark);
   const currentUser = getCurrentUser();
   const [formData, setFormData] = useState({
     name: currentUser.name,
@@ -49,6 +52,87 @@ export default function AccountScreen() {
     );
   };
 
+  const styles = StyleSheet.create({
+    safeArea: {
+      flex: 1,
+      backgroundColor: colors.background.secondary,
+      paddingTop: Platform.OS === 'android' ? 25 : 0,
+    },
+    container: {
+      flex: 1,
+    },
+    content: {
+      padding: 24,
+    },
+    avatarContainer: {
+      alignItems: 'center',
+      marginBottom: 32,
+      position: 'relative',
+    },
+    avatar: {
+      width: 100,
+      height: 100,
+      borderRadius: 50,
+    },
+    cameraButton: {
+      position: 'absolute',
+      bottom: 0,
+      right: '35%',
+      width: 32,
+      height: 32,
+      borderRadius: 16,
+      backgroundColor: colors.primary,
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderWidth: 3,
+      borderColor: colors.background.primary,
+    },
+    form: {
+      gap: 20,
+      marginBottom: 40,
+    },
+    inputGroup: {
+      gap: 8,
+    },
+    label: {
+      fontSize: 14,
+      fontFamily: Fonts.semiBold,
+      color: colors.text.primary,
+    },
+    input: {
+      backgroundColor: colors.background.primary,
+      borderRadius: 12,
+      padding: 16,
+      fontSize: 16,
+      color: colors.text.primary,
+      borderWidth: 1,
+      borderColor: colors.border,
+      fontFamily: Fonts.regular,
+    },
+    saveButton: {
+      marginTop: 12,
+    },
+    passwordButton: {
+      marginTop: 8,
+    },
+    dangerZone: {
+      backgroundColor: colors.background.primary,
+      borderRadius: 16,
+      padding: 20,
+      borderWidth: 1,
+      borderColor: colors.error,
+    },
+    dangerTitle: {
+      fontSize: 16,
+      fontFamily: Fonts.semiBold,
+      color: colors.error,
+      marginBottom: 12,
+    },
+    deleteButton: {
+      borderWidth: 0,
+    },
+  });
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
@@ -59,7 +143,7 @@ export default function AccountScreen() {
               style={styles.avatar}
             />
             <View style={styles.cameraButton}>
-              <Camera size={16} color={Colors.text.white} />
+              <Camera size={16} color={colors.white} />
             </View>
           </View>
 
@@ -71,6 +155,7 @@ export default function AccountScreen() {
                 value={formData.name}
                 onChangeText={(value) => handleInputChange('name', value)}
                 autoCapitalize="words"
+                placeholderTextColor={colors.textSecondary}
               />
             </View>
 
@@ -82,6 +167,7 @@ export default function AccountScreen() {
                 onChangeText={(value) => handleInputChange('email', value)}
                 keyboardType="email-address"
                 autoCapitalize="none"
+                placeholderTextColor={colors.textSecondary}
               />
             </View>
 
@@ -92,6 +178,7 @@ export default function AccountScreen() {
                 value={formData.phone}
                 onChangeText={(value) => handleInputChange('phone', value)}
                 keyboardType="phone-pad"
+                placeholderTextColor={colors.textSecondary}
               />
             </View>
 
@@ -115,8 +202,8 @@ export default function AccountScreen() {
             <Button
               title="Excluir conta"
               onPress={() => Alert.alert('Funcionalidade em desenvolvimento')}
-              style={[styles.deleteButton, { backgroundColor: Colors.error }]}
-              textStyle={{ color: Colors.text.white }}
+              style={[styles.deleteButton, { backgroundColor: colors.error }]}
+              textStyle={{ color: colors.white }}
             />
           </View>
         </View>
@@ -124,83 +211,3 @@ export default function AccountScreen() {
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: Colors.background.secondary,
-    paddingTop: Platform.OS === 'android' ? 25 : 0,
-  },
-  container: {
-    flex: 1,
-  },
-  content: {
-    padding: 24,
-  },
-  avatarContainer: {
-    alignItems: 'center',
-    marginBottom: 32,
-    position: 'relative',
-  },
-  avatar: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-  },
-  cameraButton: {
-    position: 'absolute',
-    bottom: 0,
-    right: '35%',
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    backgroundColor: Colors.primary,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 3,
-    borderColor: Colors.background.primary,
-  },
-  form: {
-    gap: 20,
-    marginBottom: 40,
-  },
-  inputGroup: {
-    gap: 8,
-  },
-  label: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: Colors.text.primary,
-  },
-  input: {
-    backgroundColor: Colors.background.primary,
-    borderRadius: 12,
-    padding: 16,
-    fontSize: 16,
-    color: Colors.text.primary,
-    borderWidth: 1,
-    borderColor: Colors.border,
-  },
-  saveButton: {
-    marginTop: 12,
-  },
-  passwordButton: {
-    marginTop: 8,
-  },
-  dangerZone: {
-    backgroundColor: Colors.background.primary,
-    borderRadius: 16,
-    padding: 20,
-    borderWidth: 1,
-    borderColor: Colors.error,
-  },
-  dangerTitle: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: Colors.error,
-    marginBottom: 12,
-  },
-  deleteButton: {
-    borderWidth: 0,
-  },
-});

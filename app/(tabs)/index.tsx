@@ -13,10 +13,13 @@ import {
 } from 'react-native';
 import { Search, Filter, TrendingUp, Users, Star, MessageSquare } from 'lucide-react-native';
 import EstablishmentCard from '@/components/EstablishmentCard';
-import Colors, { Fonts } from '@/constants/Colors';
+import { useTheme } from '@/contexts/ThemeContext';
+import { getColors, Fonts } from '@/constants/Colors';
 import { establishments, getCurrentUser, getBusinessEstablishment, getEstablishmentRatings } from '@/utils/mockData';
 
 export default function HomeScreen() {
+  const { isDark } = useTheme();
+  const colors = getColors(isDark);
   const currentUser = getCurrentUser();
   const isBusinessUser = currentUser.type === 'business';
   
@@ -29,6 +32,221 @@ export default function HomeScreen() {
     const matchesSearch = establishment.name.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesFilter = activeFilter === 'Todos' || establishment.category === activeFilter;
     return matchesSearch && matchesFilter;
+  });
+
+  const styles = StyleSheet.create({
+    safeArea: {
+      flex: 1,
+      backgroundColor: colors.backgroundProfile,
+      paddingTop: Platform.OS === 'android' ? 25 : 0,
+    },
+    container: {
+      flex: 1,
+    },
+    errorContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      padding: 24,
+    },
+    errorText: {
+      fontSize: 18,
+      fontFamily: Fonts.semiBold,
+      color: colors.textSecondary,
+    },
+    businessContent: {
+      padding: 16,
+    },
+    businessHeader: {
+      backgroundColor: colors.background,
+      borderRadius: 16,
+      padding: 20,
+      marginBottom: 20,
+      shadowColor: colors.shadow,
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.1,
+      shadowRadius: 8,
+      elevation: 3,
+    },
+    businessImage: {
+      width: '100%',
+      height: 120,
+      borderRadius: 12,
+      marginBottom: 16,
+    },
+    businessInfo: {
+      alignItems: 'center',
+    },
+    businessName: {
+      fontSize: 24,
+      fontFamily: Fonts.bold,
+      color: colors.textPrimary,
+      marginBottom: 4,
+    },
+    businessCategory: {
+      fontSize: 16,
+      fontFamily: Fonts.medium,
+      color: colors.primary,
+      marginBottom: 8,
+    },
+    businessAddress: {
+      fontSize: 14,
+      fontFamily: Fonts.regular,
+      color: colors.textSecondary,
+      textAlign: 'center',
+    },
+    dashboardGrid: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      gap: 12,
+      marginBottom: 24,
+    },
+    dashboardCard: {
+      backgroundColor: colors.background,
+      borderRadius: 16,
+      padding: 16,
+      width: '48%',
+      alignItems: 'center',
+      shadowColor: colors.shadow,
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.1,
+      shadowRadius: 8,
+      elevation: 3,
+    },
+    dashboardValue: {
+      fontSize: 24,
+      fontFamily: Fonts.bold,
+      color: colors.textPrimary,
+      marginTop: 8,
+      marginBottom: 4,
+    },
+    dashboardLabel: {
+      fontSize: 12,
+      fontFamily: Fonts.regular,
+      color: colors.textSecondary,
+      textAlign: 'center',
+    },
+    recentSection: {
+      backgroundColor: colors.background,
+      borderRadius: 16,
+      padding: 20,
+      shadowColor: colors.shadow,
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.1,
+      shadowRadius: 8,
+      elevation: 3,
+    },
+    sectionTitle: {
+      fontSize: 18,
+      fontFamily: Fonts.semiBold,
+      color: colors.textPrimary,
+      marginBottom: 16,
+    },
+    recentRatingCard: {
+      backgroundColor: colors.backgroundProfile,
+      borderRadius: 12,
+      padding: 16,
+      marginBottom: 12,
+    },
+    recentRatingHeader: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginBottom: 8,
+    },
+    ratingStars: {
+      flexDirection: 'row',
+      gap: 2,
+    },
+    recentRatingDate: {
+      fontSize: 12,
+      fontFamily: Fonts.regular,
+      color: colors.textSecondary,
+    },
+    recentRatingComment: {
+      fontSize: 14,
+      fontFamily: Fonts.regular,
+      color: colors.textSecondary,
+      lineHeight: 20,
+    },
+    header: {
+      backgroundColor: colors.backgroundProfile,
+      paddingTop: 16,
+      borderBottomWidth: 1,
+      borderBottomColor: colors.border,
+    },
+    searchContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      backgroundColor: colors.background,
+      marginHorizontal: 16,
+      marginBottom: 12,
+      borderRadius: 12,
+      paddingHorizontal: 12,
+      shadowColor: colors.shadow,
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.1,
+      shadowRadius: 4,
+      elevation: 2,
+    },
+    searchIcon: {
+      marginRight: 8,
+    },
+    searchInput: {
+      flex: 1,
+      height: 48,
+      fontSize: 16,
+      color: colors.textPrimary,
+      fontFamily: Fonts.regular,
+    },
+    filtersContainer: {
+      paddingHorizontal: 16,
+      paddingBottom: 12,
+    },
+    filterButton: {
+      paddingHorizontal: 16,
+      paddingVertical: 8,
+      borderRadius: 20,
+      backgroundColor: colors.background,
+      marginRight: 8,
+      borderWidth: 1,
+      borderColor: colors.border,
+    },
+    activeFilterButton: {
+      backgroundColor: colors.primary,
+      borderColor: colors.primary,
+    },
+    filterText: {
+      fontSize: 14,
+      color: colors.textSecondary,
+      fontFamily: Fonts.medium,
+    },
+    activeFilterText: {
+      color: colors.white,
+    },
+    listContainer: {
+      padding: 16,
+    },
+    emptyContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      padding: 24,
+    },
+    emptyText: {
+      fontSize: 18,
+      fontFamily: Fonts.semiBold,
+      color: colors.textSecondary,
+      textAlign: 'center',
+      marginTop: 16,
+    },
+    emptySubtext: {
+      fontSize: 14,
+      color: colors.textSecondary,
+      textAlign: 'center',
+      marginTop: 8,
+      fontFamily: Fonts.regular,
+    },
   });
 
   if (isBusinessUser) {
@@ -64,25 +282,25 @@ export default function HomeScreen() {
 
             <View style={styles.dashboardGrid}>
               <View style={styles.dashboardCard}>
-                <Star size={24} color={Colors.primary} />
+                <Star size={24} color={colors.primary} />
                 <Text style={styles.dashboardValue}>{establishment.averageRating.toFixed(1)}</Text>
                 <Text style={styles.dashboardLabel}>Avaliação Média</Text>
               </View>
               
               <View style={styles.dashboardCard}>
-                <MessageSquare size={24} color={Colors.success} />
+                <MessageSquare size={24} color={colors.success} />
                 <Text style={styles.dashboardValue}>{establishment.numRatings}</Text>
                 <Text style={styles.dashboardLabel}>Avaliações</Text>
               </View>
               
               <View style={styles.dashboardCard}>
-                <Users size={24} color={Colors.primary} />
+                <Users size={24} color={colors.primary} />
                 <Text style={styles.dashboardValue}>1.2k</Text>
                 <Text style={styles.dashboardLabel}>Visualizações</Text>
               </View>
               
               <View style={styles.dashboardCard}>
-                <TrendingUp size={24} color={Colors.success} />
+                <TrendingUp size={24} color={colors.success} />
                 <Text style={styles.dashboardValue}>+8.5%</Text>
                 <Text style={styles.dashboardLabel}>Crescimento</Text>
               </View>
@@ -98,8 +316,8 @@ export default function HomeScreen() {
                         <Star
                           key={i}
                           size={16}
-                          color={i < rating.rating ? Colors.primary : Colors.textSecondary}
-                          fill={i < rating.rating ? Colors.primary : 'transparent'}
+                          color={i < rating.rating ? colors.primary : colors.textSecondary}
+                          fill={i < rating.rating ? colors.primary : 'transparent'}
                         />
                       ))}
                     </View>
@@ -120,11 +338,11 @@ export default function HomeScreen() {
       <View style={styles.container}>
         <View style={styles.header}>
           <View style={styles.searchContainer}>
-            <Search size={20} color={Colors.textSecondary} style={styles.searchIcon} />
+            <Search size={20} color={colors.textSecondary} style={styles.searchIcon} />
             <TextInput
               style={styles.searchInput}
               placeholder="Buscar estabelecimentos..."
-              placeholderTextColor={Colors.textSecondary}
+              placeholderTextColor={colors.textSecondary}
               value={searchQuery}
               onChangeText={setSearchQuery}
             />
@@ -167,7 +385,7 @@ export default function HomeScreen() {
           />
         ) : (
           <View style={styles.emptyContainer}>
-            <Filter size={60} color={Colors.textSecondary} />
+            <Filter size={60} color={colors.textSecondary} />
             <Text style={styles.emptyText}>
               Nenhum estabelecimento encontrado para "{searchQuery}"
             </Text>
@@ -180,218 +398,3 @@ export default function HomeScreen() {
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: Colors.backgroundProfile,
-    paddingTop: Platform.OS === 'android' ? 25 : 0,
-  },
-  container: {
-    flex: 1,
-  },
-  errorContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 24,
-  },
-  errorText: {
-    fontSize: 18,
-    fontFamily: Fonts.semiBold,
-    color: Colors.textSecondary,
-  },
-  businessContent: {
-    padding: 16,
-  },
-  businessHeader: {
-    backgroundColor: Colors.background,
-    borderRadius: 16,
-    padding: 20,
-    marginBottom: 20,
-    shadowColor: Colors.shadow,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 3,
-  },
-  businessImage: {
-    width: '100%',
-    height: 120,
-    borderRadius: 12,
-    marginBottom: 16,
-  },
-  businessInfo: {
-    alignItems: 'center',
-  },
-  businessName: {
-    fontSize: 24,
-    fontFamily: Fonts.bold,
-    color: Colors.textPrimary,
-    marginBottom: 4,
-  },
-  businessCategory: {
-    fontSize: 16,
-    fontFamily: Fonts.medium,
-    color: Colors.primary,
-    marginBottom: 8,
-  },
-  businessAddress: {
-    fontSize: 14,
-    fontFamily: Fonts.regular,
-    color: Colors.textSecondary,
-    textAlign: 'center',
-  },
-  dashboardGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 12,
-    marginBottom: 24,
-  },
-  dashboardCard: {
-    backgroundColor: Colors.background,
-    borderRadius: 16,
-    padding: 16,
-    width: '48%',
-    alignItems: 'center',
-    shadowColor: Colors.shadow,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 3,
-  },
-  dashboardValue: {
-    fontSize: 24,
-    fontFamily: Fonts.bold,
-    color: Colors.textPrimary,
-    marginTop: 8,
-    marginBottom: 4,
-  },
-  dashboardLabel: {
-    fontSize: 12,
-    fontFamily: Fonts.regular,
-    color: Colors.textSecondary,
-    textAlign: 'center',
-  },
-  recentSection: {
-    backgroundColor: Colors.background,
-    borderRadius: 16,
-    padding: 20,
-    shadowColor: Colors.shadow,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 3,
-  },
-  sectionTitle: {
-    fontSize: 18,
-    fontFamily: Fonts.semiBold,
-    color: Colors.textPrimary,
-    marginBottom: 16,
-  },
-  recentRatingCard: {
-    backgroundColor: Colors.backgroundProfile,
-    borderRadius: 12,
-    padding: 16,
-    marginBottom: 12,
-  },
-  recentRatingHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 8,
-  },
-  ratingStars: {
-    flexDirection: 'row',
-    gap: 2,
-  },
-  recentRatingDate: {
-    fontSize: 12,
-    fontFamily: Fonts.regular,
-    color: Colors.textSecondary,
-  },
-  recentRatingComment: {
-    fontSize: 14,
-    fontFamily: Fonts.regular,
-    color: Colors.textSecondary,
-    lineHeight: 20,
-  },
-  header: {
-    backgroundColor: Colors.backgroundProfile,
-    paddingTop: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.border,
-  },
-  searchContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: Colors.background,
-    marginHorizontal: 16,
-    marginBottom: 12,
-    borderRadius: 12,
-    paddingHorizontal: 12,
-    shadowColor: Colors.shadow,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 2,
-  },
-  searchIcon: {
-    marginRight: 8,
-  },
-  searchInput: {
-    flex: 1,
-    height: 48,
-    fontSize: 16,
-    color: Colors.textPrimary,
-    fontFamily: Fonts.regular,
-  },
-  filtersContainer: {
-    paddingHorizontal: 16,
-    paddingBottom: 12,
-  },
-  filterButton: {
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 20,
-    backgroundColor: Colors.background,
-    marginRight: 8,
-    borderWidth: 1,
-    borderColor: Colors.border,
-  },
-  activeFilterButton: {
-    backgroundColor: Colors.primary,
-    borderColor: Colors.primary,
-  },
-  filterText: {
-    fontSize: 14,
-    color: Colors.textSecondary,
-    fontFamily: Fonts.medium,
-  },
-  activeFilterText: {
-    color: Colors.white,
-  },
-  listContainer: {
-    padding: 16,
-  },
-  emptyContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 24,
-  },
-  emptyText: {
-    fontSize: 18,
-    fontFamily: Fonts.semiBold,
-    color: Colors.textSecondary,
-    textAlign: 'center',
-    marginTop: 16,
-  },
-  emptySubtext: {
-    fontSize: 14,
-    color: Colors.textSecondary,
-    textAlign: 'center',
-    marginTop: 8,
-    fontFamily: Fonts.regular,
-  },
-});

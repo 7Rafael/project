@@ -8,7 +8,8 @@ import {
   TextStyle,
   View
 } from 'react-native';
-import Colors, { Fonts } from '../constants/Colors';
+import { useTheme } from '@/contexts/ThemeContext';
+import { getColors, Fonts } from '@/constants/Colors';
 
 interface ButtonProps {
   title: string;
@@ -33,6 +34,49 @@ const Button = ({
   textStyle,
   children
 }: ButtonProps) => {
+  const { isDark } = useTheme();
+  const colors = getColors(isDark);
+
+  const styles = StyleSheet.create({
+    button: {
+      paddingVertical: 12,
+      paddingHorizontal: 24,
+      borderRadius: 25,
+      alignItems: 'center',
+      justifyContent: 'center',
+      minWidth: 120,
+    },
+    primaryButton: {
+      backgroundColor: colors.primary,
+    },
+    outlineButton: {
+      backgroundColor: 'transparent',
+      borderWidth: 1,
+      borderColor: colors.primary,
+    },
+    disabledButton: {
+      backgroundColor: colors.hoverFocus,
+      opacity: 0.7,
+    },
+    text: {
+      fontSize: 16,
+      fontFamily: Fonts.semiBold,
+    },
+    primaryText: {
+      color: colors.white,
+    },
+    outlineText: {
+      color: colors.primary,
+    },
+    disabledText: {
+      color: colors.white,
+    },
+    childrenContainer: {
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+  });
+
   const buttonStyles = [
     styles.button,
     primary && !outline && styles.primaryButton,
@@ -58,7 +102,7 @@ const Button = ({
     >
       {loading ? (
         <ActivityIndicator 
-          color={outline ? Colors.primary : Colors.white} 
+          color={outline ? colors.primary : colors.white} 
           size="small" 
         />
       ) : children ? (
@@ -71,45 +115,5 @@ const Button = ({
     </TouchableOpacity>
   );
 };
-
-const styles = StyleSheet.create({
-  button: {
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    borderRadius: 25,
-    alignItems: 'center',
-    justifyContent: 'center',
-    minWidth: 120,
-  },
-  primaryButton: {
-    backgroundColor: Colors.primary,
-  },
-  outlineButton: {
-    backgroundColor: 'transparent',
-    borderWidth: 1,
-    borderColor: Colors.primary,
-  },
-  disabledButton: {
-    backgroundColor: Colors.hoverFocus,
-    opacity: 0.7,
-  },
-  text: {
-    fontSize: 16,
-    fontFamily: Fonts.semiBold,
-  },
-  primaryText: {
-    color: Colors.white,
-  },
-  outlineText: {
-    color: Colors.primary,
-  },
-  disabledText: {
-    color: Colors.white,
-  },
-  childrenContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
 
 export default Button;

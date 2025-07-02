@@ -13,10 +13,13 @@ import {
 } from 'react-native';
 import { Camera, MapPin, Phone, Mail, FileText } from 'lucide-react-native';
 import Button from '@/components/Button';
-import Colors, { Fonts } from '@/constants/Colors';
+import { useTheme } from '@/contexts/ThemeContext';
+import { getColors, Fonts } from '@/constants/Colors';
 import { getCurrentUser, getBusinessEstablishment } from '@/utils/mockData';
 
 export default function BusinessProfileScreen() {
+  const { isDark } = useTheme();
+  const colors = getColors(isDark);
   const currentUser = getCurrentUser();
   const establishment = currentUser.type === 'business' && currentUser.businessId 
     ? getBusinessEstablishment(currentUser.businessId) 
@@ -69,6 +72,109 @@ export default function BusinessProfileScreen() {
     );
   };
 
+  const styles = StyleSheet.create({
+    safeArea: {
+      flex: 1,
+      backgroundColor: colors.backgroundProfile,
+      paddingTop: Platform.OS === 'android' ? 25 : 0,
+    },
+    container: {
+      flex: 1,
+    },
+    content: {
+      padding: 24,
+    },
+    errorContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      padding: 24,
+    },
+    errorText: {
+      fontSize: 18,
+      fontFamily: Fonts.semiBold,
+      color: colors.textSecondary,
+    },
+    imageContainer: {
+      alignItems: 'center',
+      marginBottom: 32,
+      position: 'relative',
+    },
+    establishmentImage: {
+      width: 120,
+      height: 120,
+      borderRadius: 16,
+    },
+    cameraButton: {
+      position: 'absolute',
+      bottom: -8,
+      right: '35%',
+      width: 32,
+      height: 32,
+      borderRadius: 16,
+      backgroundColor: colors.primary,
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderWidth: 3,
+      borderColor: colors.background,
+    },
+    form: {
+      gap: 20,
+      marginBottom: 32,
+    },
+    inputGroup: {
+      gap: 8,
+    },
+    labelContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 8,
+    },
+    label: {
+      fontSize: 14,
+      fontFamily: Fonts.semiBold,
+      color: colors.textPrimary,
+    },
+    input: {
+      backgroundColor: colors.background,
+      borderRadius: 12,
+      padding: 16,
+      fontSize: 16,
+      color: colors.textPrimary,
+      borderWidth: 1,
+      borderColor: colors.border,
+      fontFamily: Fonts.regular,
+    },
+    textArea: {
+      height: 100,
+    },
+    saveButton: {
+      marginTop: 12,
+    },
+    infoSection: {
+      backgroundColor: colors.background,
+      borderRadius: 16,
+      padding: 20,
+      shadowColor: colors.shadow,
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.1,
+      shadowRadius: 8,
+      elevation: 3,
+    },
+    infoTitle: {
+      fontSize: 16,
+      fontFamily: Fonts.semiBold,
+      color: colors.textPrimary,
+      marginBottom: 12,
+    },
+    infoText: {
+      fontSize: 14,
+      fontFamily: Fonts.regular,
+      color: colors.textSecondary,
+      lineHeight: 20,
+    },
+  });
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
@@ -79,14 +185,14 @@ export default function BusinessProfileScreen() {
               style={styles.establishmentImage}
             />
             <TouchableOpacity style={styles.cameraButton} onPress={handleChangeImage}>
-              <Camera size={16} color={Colors.white} />
+              <Camera size={16} color={colors.white} />
             </TouchableOpacity>
           </View>
 
           <View style={styles.form}>
             <View style={styles.inputGroup}>
               <View style={styles.labelContainer}>
-                <FileText size={16} color={Colors.textSecondary} />
+                <FileText size={16} color={colors.textSecondary} />
                 <Text style={styles.label}>Nome do estabelecimento</Text>
               </View>
               <TextInput
@@ -94,13 +200,13 @@ export default function BusinessProfileScreen() {
                 value={formData.name}
                 onChangeText={(value) => handleInputChange('name', value)}
                 placeholder="Nome do seu negócio"
-                placeholderTextColor={Colors.textSecondary}
+                placeholderTextColor={colors.textSecondary}
               />
             </View>
 
             <View style={styles.inputGroup}>
               <View style={styles.labelContainer}>
-                <FileText size={16} color={Colors.textSecondary} />
+                <FileText size={16} color={colors.textSecondary} />
                 <Text style={styles.label}>Categoria</Text>
               </View>
               <TextInput
@@ -108,13 +214,13 @@ export default function BusinessProfileScreen() {
                 value={formData.category}
                 onChangeText={(value) => handleInputChange('category', value)}
                 placeholder="Tipo de estabelecimento"
-                placeholderTextColor={Colors.textSecondary}
+                placeholderTextColor={colors.textSecondary}
               />
             </View>
 
             <View style={styles.inputGroup}>
               <View style={styles.labelContainer}>
-                <MapPin size={16} color={Colors.textSecondary} />
+                <MapPin size={16} color={colors.textSecondary} />
                 <Text style={styles.label}>Endereço</Text>
               </View>
               <TextInput
@@ -122,14 +228,14 @@ export default function BusinessProfileScreen() {
                 value={formData.address}
                 onChangeText={(value) => handleInputChange('address', value)}
                 placeholder="Endereço completo"
-                placeholderTextColor={Colors.textSecondary}
+                placeholderTextColor={colors.textSecondary}
                 multiline
               />
             </View>
 
             <View style={styles.inputGroup}>
               <View style={styles.labelContainer}>
-                <Phone size={16} color={Colors.textSecondary} />
+                <Phone size={16} color={colors.textSecondary} />
                 <Text style={styles.label}>Telefone</Text>
               </View>
               <TextInput
@@ -137,14 +243,14 @@ export default function BusinessProfileScreen() {
                 value={formData.phone}
                 onChangeText={(value) => handleInputChange('phone', value)}
                 placeholder="(11) 99999-9999"
-                placeholderTextColor={Colors.textSecondary}
+                placeholderTextColor={colors.textSecondary}
                 keyboardType="phone-pad"
               />
             </View>
 
             <View style={styles.inputGroup}>
               <View style={styles.labelContainer}>
-                <Mail size={16} color={Colors.textSecondary} />
+                <Mail size={16} color={colors.textSecondary} />
                 <Text style={styles.label}>Email</Text>
               </View>
               <TextInput
@@ -152,7 +258,7 @@ export default function BusinessProfileScreen() {
                 value={formData.email}
                 onChangeText={(value) => handleInputChange('email', value)}
                 placeholder="email@estabelecimento.com"
-                placeholderTextColor={Colors.textSecondary}
+                placeholderTextColor={colors.textSecondary}
                 keyboardType="email-address"
                 autoCapitalize="none"
               />
@@ -160,7 +266,7 @@ export default function BusinessProfileScreen() {
 
             <View style={styles.inputGroup}>
               <View style={styles.labelContainer}>
-                <FileText size={16} color={Colors.textSecondary} />
+                <FileText size={16} color={colors.textSecondary} />
                 <Text style={styles.label}>Descrição</Text>
               </View>
               <TextInput
@@ -168,7 +274,7 @@ export default function BusinessProfileScreen() {
                 value={formData.description}
                 onChangeText={(value) => handleInputChange('description', value)}
                 placeholder="Descreva seu estabelecimento..."
-                placeholderTextColor={Colors.textSecondary}
+                placeholderTextColor={colors.textSecondary}
                 multiline
                 numberOfLines={4}
                 textAlignVertical="top"
@@ -177,7 +283,7 @@ export default function BusinessProfileScreen() {
 
             <View style={styles.inputGroup}>
               <View style={styles.labelContainer}>
-                <FileText size={16} color={Colors.textSecondary} />
+                <FileText size={16} color={colors.textSecondary} />
                 <Text style={styles.label}>Horário de funcionamento</Text>
               </View>
               <TextInput
@@ -185,7 +291,7 @@ export default function BusinessProfileScreen() {
                 value={formData.workingHours}
                 onChangeText={(value) => handleInputChange('workingHours', value)}
                 placeholder="Horários de funcionamento..."
-                placeholderTextColor={Colors.textSecondary}
+                placeholderTextColor={colors.textSecondary}
                 multiline
                 numberOfLines={3}
                 textAlignVertical="top"
@@ -214,106 +320,3 @@ export default function BusinessProfileScreen() {
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: Colors.backgroundProfile,
-    paddingTop: Platform.OS === 'android' ? 25 : 0,
-  },
-  container: {
-    flex: 1,
-  },
-  content: {
-    padding: 24,
-  },
-  errorContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 24,
-  },
-  errorText: {
-    fontSize: 18,
-    fontFamily: Fonts.semiBold,
-    color: Colors.textSecondary,
-  },
-  imageContainer: {
-    alignItems: 'center',
-    marginBottom: 32,
-    position: 'relative',
-  },
-  establishmentImage: {
-    width: 120,
-    height: 120,
-    borderRadius: 16,
-  },
-  cameraButton: {
-    position: 'absolute',
-    bottom: -8,
-    right: '35%',
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    backgroundColor: Colors.primary,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 3,
-    borderColor: Colors.background,
-  },
-  form: {
-    gap: 20,
-    marginBottom: 32,
-  },
-  inputGroup: {
-    gap: 8,
-  },
-  labelContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  label: {
-    fontSize: 14,
-    fontFamily: Fonts.semiBold,
-    color: Colors.textPrimary,
-  },
-  input: {
-    backgroundColor: Colors.background,
-    borderRadius: 12,
-    padding: 16,
-    fontSize: 16,
-    color: Colors.textPrimary,
-    borderWidth: 1,
-    borderColor: Colors.border,
-    fontFamily: Fonts.regular,
-  },
-  textArea: {
-    height: 100,
-  },
-  saveButton: {
-    marginTop: 12,
-  },
-  infoSection: {
-    backgroundColor: Colors.background,
-    borderRadius: 16,
-    padding: 20,
-    shadowColor: Colors.shadow,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 3,
-  },
-  infoTitle: {
-    fontSize: 16,
-    fontFamily: Fonts.semiBold,
-    color: Colors.textPrimary,
-    marginBottom: 12,
-  },
-  infoText: {
-    fontSize: 14,
-    fontFamily: Fonts.regular,
-    color: Colors.textSecondary,
-    lineHeight: 20,
-  },
-});

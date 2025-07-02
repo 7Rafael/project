@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, FlatList, SafeAreaView, Platform, TouchableOpacity } from 'react-native';
 import { Star, Filter, TrendingUp, TrendingDown } from 'lucide-react-native';
-import Colors, { Fonts } from '@/constants/Colors';
+import { useTheme } from '@/contexts/ThemeContext';
+import { getColors, Fonts } from '@/constants/Colors';
 import { getCurrentUser, getBusinessEstablishment, getEstablishmentRatings } from '@/utils/mockData';
 
 export default function ReviewsScreen() {
+  const { isDark } = useTheme();
+  const colors = getColors(isDark);
   const currentUser = getCurrentUser();
   const establishment = currentUser.type === 'business' && currentUser.businessId 
     ? getBusinessEstablishment(currentUser.businessId) 
@@ -44,8 +47,8 @@ export default function ReviewsScreen() {
             <Star
               key={i}
               size={18}
-              color={i < item.rating ? Colors.primary : Colors.textSecondary}
-              fill={i < item.rating ? Colors.primary : 'transparent'}
+              color={i < item.rating ? colors.primary : colors.textSecondary}
+              fill={i < item.rating ? colors.primary : 'transparent'}
             />
           ))}
         </View>
@@ -56,18 +59,194 @@ export default function ReviewsScreen() {
         <Text style={styles.ratingUser}>Cliente anônimo</Text>
         {item.rating >= 4 ? (
           <View style={styles.positiveIndicator}>
-            <TrendingUp size={16} color={Colors.success} />
+            <TrendingUp size={16} color={colors.success} />
             <Text style={styles.positiveText}>Positiva</Text>
           </View>
         ) : item.rating <= 2 ? (
           <View style={styles.negativeIndicator}>
-            <TrendingDown size={16} color={Colors.error} />
+            <TrendingDown size={16} color={colors.error} />
             <Text style={styles.negativeText}>Negativa</Text>
           </View>
         ) : null}
       </View>
     </View>
   );
+
+  const styles = StyleSheet.create({
+    safeArea: {
+      flex: 1,
+      backgroundColor: colors.backgroundProfile,
+      paddingTop: Platform.OS === 'android' ? 25 : 0,
+    },
+    container: {
+      flex: 1,
+    },
+    errorContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      padding: 24,
+    },
+    errorText: {
+      fontSize: 18,
+      fontFamily: Fonts.semiBold,
+      color: colors.textSecondary,
+    },
+    header: {
+      backgroundColor: colors.backgroundProfile,
+      paddingTop: 16,
+      borderBottomWidth: 1,
+      borderBottomColor: colors.border,
+    },
+    summaryCard: {
+      backgroundColor: colors.background,
+      marginHorizontal: 16,
+      marginBottom: 16,
+      borderRadius: 16,
+      padding: 20,
+      shadowColor: colors.shadow,
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.1,
+      shadowRadius: 8,
+      elevation: 3,
+    },
+    summaryTitle: {
+      fontSize: 18,
+      fontFamily: Fonts.semiBold,
+      color: colors.textPrimary,
+      marginBottom: 16,
+    },
+    summaryContent: {
+      flexDirection: 'row',
+      justifyContent: 'space-around',
+    },
+    summaryItem: {
+      alignItems: 'center',
+    },
+    summaryValue: {
+      fontSize: 24,
+      fontFamily: Fonts.bold,
+      color: colors.primary,
+      marginBottom: 4,
+    },
+    summaryLabel: {
+      fontSize: 14,
+      fontFamily: Fonts.regular,
+      color: colors.textSecondary,
+    },
+    filtersContainer: {
+      flexDirection: 'row',
+      paddingHorizontal: 16,
+      paddingBottom: 16,
+      gap: 8,
+    },
+    filterButton: {
+      paddingHorizontal: 16,
+      paddingVertical: 8,
+      borderRadius: 20,
+      backgroundColor: colors.background,
+      borderWidth: 1,
+      borderColor: colors.border,
+    },
+    activeFilterButton: {
+      backgroundColor: colors.primary,
+      borderColor: colors.primary,
+    },
+    filterText: {
+      fontSize: 14,
+      color: colors.textSecondary,
+      fontFamily: Fonts.medium,
+    },
+    activeFilterText: {
+      color: colors.white,
+    },
+    listContainer: {
+      padding: 16,
+    },
+    ratingCard: {
+      backgroundColor: colors.background,
+      borderRadius: 16,
+      padding: 16,
+      marginBottom: 12,
+      shadowColor: colors.shadow,
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.1,
+      shadowRadius: 8,
+      elevation: 3,
+    },
+    ratingHeader: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginBottom: 12,
+    },
+    ratingStars: {
+      flexDirection: 'row',
+      gap: 2,
+    },
+    ratingDate: {
+      fontSize: 12,
+      fontFamily: Fonts.regular,
+      color: colors.textSecondary,
+    },
+    ratingComment: {
+      fontSize: 14,
+      fontFamily: Fonts.regular,
+      color: colors.textSecondary,
+      lineHeight: 20,
+      marginBottom: 12,
+    },
+    ratingFooter: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+    },
+    ratingUser: {
+      fontSize: 12,
+      fontFamily: Fonts.medium,
+      color: colors.textPrimary,
+    },
+    positiveIndicator: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 4,
+    },
+    positiveText: {
+      fontSize: 12,
+      fontFamily: Fonts.medium,
+      color: colors.success,
+    },
+    negativeIndicator: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 4,
+    },
+    negativeText: {
+      fontSize: 12,
+      fontFamily: Fonts.medium,
+      color: colors.error,
+    },
+    emptyContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      padding: 24,
+    },
+    emptyText: {
+      fontSize: 18,
+      fontFamily: Fonts.semiBold,
+      color: colors.textSecondary,
+      textAlign: 'center',
+      marginTop: 16,
+    },
+    emptySubtext: {
+      fontSize: 14,
+      color: colors.textSecondary,
+      textAlign: 'center',
+      marginTop: 8,
+      fontFamily: Fonts.regular,
+    },
+  });
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -120,7 +299,7 @@ export default function ReviewsScreen() {
           />
         ) : (
           <View style={styles.emptyContainer}>
-            <Filter size={60} color={Colors.textSecondary} />
+            <Filter size={60} color={colors.textSecondary} />
             <Text style={styles.emptyText}>
               Nenhuma avaliação encontrada
             </Text>
@@ -136,179 +315,3 @@ export default function ReviewsScreen() {
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: Colors.backgroundProfile,
-    paddingTop: Platform.OS === 'android' ? 25 : 0,
-  },
-  container: {
-    flex: 1,
-  },
-  errorContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 24,
-  },
-  errorText: {
-    fontSize: 18,
-    fontFamily: Fonts.semiBold,
-    color: Colors.textSecondary,
-  },
-  header: {
-    backgroundColor: Colors.backgroundProfile,
-    paddingTop: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.border,
-  },
-  summaryCard: {
-    backgroundColor: Colors.background,
-    marginHorizontal: 16,
-    marginBottom: 16,
-    borderRadius: 16,
-    padding: 20,
-    shadowColor: Colors.shadow,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 3,
-  },
-  summaryTitle: {
-    fontSize: 18,
-    fontFamily: Fonts.semiBold,
-    color: Colors.textPrimary,
-    marginBottom: 16,
-  },
-  summaryContent: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-  },
-  summaryItem: {
-    alignItems: 'center',
-  },
-  summaryValue: {
-    fontSize: 24,
-    fontFamily: Fonts.bold,
-    color: Colors.primary,
-    marginBottom: 4,
-  },
-  summaryLabel: {
-    fontSize: 14,
-    fontFamily: Fonts.regular,
-    color: Colors.textSecondary,
-  },
-  filtersContainer: {
-    flexDirection: 'row',
-    paddingHorizontal: 16,
-    paddingBottom: 16,
-    gap: 8,
-  },
-  filterButton: {
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 20,
-    backgroundColor: Colors.background,
-    borderWidth: 1,
-    borderColor: Colors.border,
-  },
-  activeFilterButton: {
-    backgroundColor: Colors.primary,
-    borderColor: Colors.primary,
-  },
-  filterText: {
-    fontSize: 14,
-    color: Colors.textSecondary,
-    fontFamily: Fonts.medium,
-  },
-  activeFilterText: {
-    color: Colors.white,
-  },
-  listContainer: {
-    padding: 16,
-  },
-  ratingCard: {
-    backgroundColor: Colors.background,
-    borderRadius: 16,
-    padding: 16,
-    marginBottom: 12,
-    shadowColor: Colors.shadow,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 3,
-  },
-  ratingHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 12,
-  },
-  ratingStars: {
-    flexDirection: 'row',
-    gap: 2,
-  },
-  ratingDate: {
-    fontSize: 12,
-    fontFamily: Fonts.regular,
-    color: Colors.textSecondary,
-  },
-  ratingComment: {
-    fontSize: 14,
-    fontFamily: Fonts.regular,
-    color: Colors.textSecondary,
-    lineHeight: 20,
-    marginBottom: 12,
-  },
-  ratingFooter: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  ratingUser: {
-    fontSize: 12,
-    fontFamily: Fonts.medium,
-    color: Colors.textPrimary,
-  },
-  positiveIndicator: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
-  },
-  positiveText: {
-    fontSize: 12,
-    fontFamily: Fonts.medium,
-    color: Colors.success,
-  },
-  negativeIndicator: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
-  },
-  negativeText: {
-    fontSize: 12,
-    fontFamily: Fonts.medium,
-    color: Colors.error,
-  },
-  emptyContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 24,
-  },
-  emptyText: {
-    fontSize: 18,
-    fontFamily: Fonts.semiBold,
-    color: Colors.textSecondary,
-    textAlign: 'center',
-    marginTop: 16,
-  },
-  emptySubtext: {
-    fontSize: 14,
-    color: Colors.textSecondary,
-    textAlign: 'center',
-    marginTop: 8,
-    fontFamily: Fonts.regular,
-  },
-});

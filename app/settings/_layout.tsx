@@ -1,19 +1,23 @@
 import React from 'react';
 import { Stack } from 'expo-router';
-import Colors, { Fonts } from '@/constants/Colors';
+import { useTheme } from '@/contexts/ThemeContext';
+import { getColors, Fonts } from '@/constants/Colors';
 
 export default function SettingsLayout() {
+  const { isDark } = useTheme();
+  const colors = getColors(isDark);
+
   return (
     <Stack
       screenOptions={{
         headerStyle: {
-          backgroundColor: Colors.background,
+          backgroundColor: colors.background,
         },
         headerTitleStyle: {
           fontFamily: Fonts.semiBold,
-          color: Colors.textPrimary,
+          color: colors.textPrimary,
         },
-        headerTintColor: Colors.primary,
+        headerTintColor: colors.primary,
         headerShadowVisible: false,
       }}
     >
@@ -28,6 +32,13 @@ export default function SettingsLayout() {
         name="account" 
         options={{ 
           headerTitle: 'Conta',
+          headerBackTitle: 'Voltar'
+        }} 
+      />
+      <Stack.Screen 
+        name="appearance" 
+        options={{ 
+          headerTitle: 'Aparência',
           headerBackTitle: 'Voltar'
         }} 
       />
